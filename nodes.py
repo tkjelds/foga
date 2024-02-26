@@ -21,9 +21,12 @@ class NodeGroup(object):
     def __init__(self, level):
         self.level = level
         self.nodesLUT = {}
-        self.nodeSymbols = ['+']
+        self.nodeSymbols = ['+','p','g']
         self.pathSymbols = ['.']
         self.pacmanSpawnSymbol = ['p']
+        self.ghostSpawnSymbol = ['g']
+        self.ghostNodes = []
+        self.pacmanNode = None
         data = self.readMazeFile(level)
         self.createNodeTable(data)
         self.connectHorizontally(data)
@@ -42,6 +45,10 @@ class NodeGroup(object):
                 if data[row][col] in self.nodeSymbols:
                     x, y = self.constructKey(col+xoffset, row+yoffset)
                     self.nodesLUT[(x, y)] = Node(x, y)
+                    if data[row][col] in self.pacmanSpawnSymbol:
+                        self.pacmanNode = (x,y)
+                    if data[row][col] in self.ghostSpawnSymbol:
+                        self.ghostNodes.append((x,y))
 
     def constructKey(self, x, y):
         return x * TILEWIDTH, y * TILEHEIGHT
@@ -88,6 +95,8 @@ class NodeGroup(object):
             return self.nodesLUT[(x, y)]
         return None
     
-    def getStartTempNode(self):
-        nodes = list(self.nodesLUT.values())
-        return nodes[0]
+    def getPacmanStartNode(self):
+        return self.nodesLUT[self.pacmanNode]
+    
+    def getGhostStartNode(self):
+        return self.nodesLUT[self.ghostNodes.__getitem__(0)]

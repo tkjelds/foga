@@ -19,8 +19,8 @@ class GameController(object):
     def startGame(self):
         self.setBackground()
         self.nodes = NodeGroup("mazes/maze01.txt")
-        self.pacman = Pacman(self.nodes.getStartTempNode())
-        self.ghost = Ghost(self.nodes.getStartTempNode())
+        self.pacman = Pacman(self.nodes.getPacmanStartNode())
+        self.ghost = Ghost(self.nodes.getGhostStartNode())
 
     def update(self):
         dt = self.clock.tick(30) / 1000.0

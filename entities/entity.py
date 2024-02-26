@@ -24,7 +24,6 @@ class Entity(object):
 
     def setPosition(self):
         self.position = self.node.position.copy()
-        #print(self.position)
           
     def validDirection(self, direction):
         if direction is not STOP:
@@ -89,13 +88,12 @@ class Entity(object):
                     directions.append(key)
         if len(directions) == 0:
             directions.append(self.direction * -1)
-        #print(directions)
         return directions
 
     def randomDirection(self, directions):
         return directions[randint(0, len(directions)-1)]
     
-    def goalDirection(self, directions):
+    def seek(self, directions):
         distances = []
         for direction in directions:
             vec = self.node.position  + self.directions[direction]*TILEWIDTH - self.goal
@@ -103,7 +101,7 @@ class Entity(object):
         index = distances.index(min(distances))
         return directions[index]
     
-    def repulsionDirection(self, directions):
+    def flee(self, directions):
         distances = []
         for direction in directions:
             vec = self.node.position  + self.directions[direction]*TILEWIDTH - self.goal
